@@ -1,4 +1,4 @@
-# Controlando um Led com ESP8266 através de uma aplicação Web 
+# Controlando Led com ESP8266 através da Internet
 Hoje montei uma pequena aplicação que tem como objetivo controlar um **LED** conectado ao **ESP8266** através da **Internet**
 
 ### Materiais 
