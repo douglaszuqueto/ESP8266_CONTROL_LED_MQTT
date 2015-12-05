@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ESP8266 and LED - MQTT/WS</title>
+</head>
+<body>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+  <script src="http://git.eclipse.org/c/paho/org.eclipse.paho.mqtt.javascript.git/plain/src/mqttws31.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+  <script type="text/javascript">
+  var MQTTWS_BROKER = "200.132.17.11"; // IP Broker MQTT (Meu Servidor)
+  var WS_PORT = 8080 // Porta de WebSockets para Comunicação
+  var MQTT = new Paho.MQTT.Client(MQTTWS_BROKER, WS_PORT,"Fedora"); // Instancia o Cliente MQTT
+  MQTT.onConnectionLost = function (responseObject) {
+    console.log("Status: " + responseObject.errorMessage);
+  };
+  MQTT.onMessageArrived = function (message) {
+    console.log(message.destinationName, ' -- ', message.payloadString);
+  };
+  var options = {
+    timeout: 3,
+    onSuccess: function () {
+      console.log("Conectado com o Broker MQTT");
+      MQTT.subscribe('led/1', {qos: 1}); // Assina o Tópico led/1
+    },
+    onFailure: function (message) {
+      console.log("Connection failed: " + message.errorMessage);
+    }
+  };
+  function init() {
+    MQTT.connect(options); // Conecta ao Broker MQTT
+  }
+  $(document).ready(function(){
+    $('#btn-on').click(function(){ // Evento do Botão Ligar
+      message = new Paho.MQTT.Message("1"); // Cria uma nova mensagem
+      message.destinationName = "led/1"; // Define o tópico a ser enviado, neste caso: led/1
+      MQTT.send(message); // Envia a mensagem
+    });
+    $('#btn-off').click(function(){ // Evento do Botão Desligar
+      message = new Paho.MQTT.Message("0"); // Cria uma nova mensagem
+      message.destinationName = "led/1"; // Define o tópico a ser enviado, neste caso: led/1
+      MQTT.send(message); // Envia a mensagem
+    });
+  });
+  init();
+  </script>
+</body>
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <h2 class="center">Controlando LED com MQTT</h2>
+      <div class="row center">
+        <a class="waves-effect waves-light btn green" id="btn-on">Ligar</a>
+        <a class="waves-effect waves-light btn red" id="btn-off">Desligar</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
