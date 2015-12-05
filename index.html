@@ -11,8 +11,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
   <script type="text/javascript">
   var MQTTWS_BROKER = "200.132.17.11"; // IP Broker MQTT (Meu Servidor)
-  var WS_PORT = 8080 // Porta de WebSockets para Comunicação
-  var MQTT = new Paho.MQTT.Client(MQTTWS_BROKER, WS_PORT,"Fedora"); // Instancia o Cliente MQTT
+  var WS_PORT = 80; // Porta de WebSockets para Comunicação
+  var MQTT = new Paho.MQTT.Client(MQTTWS_BROKER, WS_PORT,"Fedora-"+ new Date().getTime()); // Instancia o Cliente MQTT
   MQTT.onConnectionLost = function (responseObject) {
     console.log("Status: " + responseObject.errorMessage);
   };

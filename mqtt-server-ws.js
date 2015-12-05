@@ -2,7 +2,7 @@ var mosca = require('mosca'); // Importa o modulo Mosca
 var settings = {
   port: 1883, // Define a porta de operação do MQTT
   http: { // Servidor de WebSockets
-    port: 8080,
+    port: 80,
     bundle: true,
     static: './'
   }
